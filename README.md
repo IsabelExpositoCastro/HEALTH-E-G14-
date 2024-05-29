@@ -42,22 +42,23 @@ To run the application, use the Streamlit CLI:
 streamlit run MyApp.py
 ```
 # Usage
-- Login:
+**- Login:**
 Enter your email and password on the login page.
-Use the dummy credentials: user@example.com and password.
 
-- Chatbot:
+Use the dummy credentials: *user@example.com* and *password*.
+
+**- Chatbot:**
 After logging in, navigate to the Chatbot page from the sidebar.
 Enter your message in the input field and click 'Send'.
 The chatbot will respond to your message.
 
-- Appointments:
+**- Appointments:**
 Navigate to the Appointments page from the sidebar.
 This section is reserved for future functionality.
 
-- Profile:
+**- Profile:**
 Navigate to the Profile page from the sidebar.
 This section is reserved for future functionality.
 
-- Logout:
+**- Logout:**
 Click the 'Logout' button to log out of the application.
