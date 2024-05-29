@@ -30,34 +30,35 @@ pip install -r requirements.txt
 
 # Configuration
 Create a .env file in the root directory of your project and add your OpenAI API key.
+[In bash terminal]
+```bash
+export OPENAI_API_KEY="your_openai_api_key"
+```
+Or manualy from Environment Variables configuration.
 
-bash
-Copiar código
-OPENAI_API_KEY=your_openai_api_key
-Running the Application
+# Running the Application
 To run the application, use the Streamlit CLI:
-
-bash
-Copiar código
+```bash
 streamlit run MyApp.py
-Usage
-Login:
-
+```
+# Usage
+- **Login:**
 Enter your email and password on the login page.
-Use the dummy credentials: user@example.com and password.
-Chatbot:
 
+Use the dummy credentials: *user@example.com* and *password*.
+
+- **Chatbot:**
 After logging in, navigate to the Chatbot page from the sidebar.
 Enter your message in the input field and click 'Send'.
 The chatbot will respond to your message.
-Appointments:
 
+- **Appointments:**
 Navigate to the Appointments page from the sidebar.
 This section is reserved for future functionality.
-Profile:
 
+- **Profile:**
 Navigate to the Profile page from the sidebar.
 This section is reserved for future functionality.
-Logout:
 
+- **Logout:**
 Click the 'Logout' button to log out of the application.
