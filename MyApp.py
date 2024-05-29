@@ -1,9 +1,14 @@
 import os
 import streamlit as st
 from openai import OpenAI
+import json
 
 # Initialize OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+# Initialize "database"
+with open('database.json', 'r') as file:
+    users = json.load(file)
 
 # Initialize session state variable if not already initialized
 if "messages" not in st.session_state:
@@ -22,17 +27,23 @@ def login():
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
     if st.button("Login"):
-        # Check if email and password are correct (dummy validation)
-        if email == "user@example.com" and password == "password":
+        # Check if email and password are correct
+        if email in users and users[email]['Password'] == password:
             st.session_state.logged_in = True  # Initialize session state variable
+            st.session_state.user = users[email]
             return True
         else:
             st.error("Invalid email or password")
             return False
+        
+#def createAccount():
+    #email = st.text_input("Email")
+    #password = st.text_input("Password")
 
 # Function to log out the user
 def logout():
     st.session_state.logged_in = False
+    del st.session_state.user
     st.success("You have been logged out successfully.")
 
 # Main function to run the app
@@ -94,7 +105,15 @@ def main():
         # Profile page
         elif menu == "Profile":
             st.subheader("Profile")
-            st.write("This is where the profile management functionality will go.")
+            container = st.container()
+            with container:
+                rows = [] # Store all rows in an array so they can be accessed later
+                for field, value in st.session_state.user.items():
+                    if field != "Password":
+                        row = st.columns(2)
+                        row[0].write(f"**{field}:**")
+                        row[1].write(value)
+                        rows.append(row)
 
 # Run the app
 if __name__ == "__main__":
