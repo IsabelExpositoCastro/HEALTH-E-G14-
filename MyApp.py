@@ -3,10 +3,6 @@ import streamlit as st
 from openai import OpenAI
 import json
 
-# Constants
-PROFILE_ROWS = ["**Name:** Pedro Mapache", "**Date of Birth:** 15/05/1992", "**Gender:** Male", "**Blood Type:** O+",
-    "**Family Doctor:** Dr. Smith", "**Email:** pedroelmapache@gmail.com", "**Phone:** +34 612345678", "**Address:** Passeig de Pujades, 1, 08003 BCN"]
-
 # Initialize OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
