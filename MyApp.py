@@ -48,7 +48,7 @@ def logout():
 
 # Main function to run the app
 def main():
-    st.title("Health-EFTESTING App")
+    st.title("Health-E App")
 
     # Initialize session state variable if not already initialized
     if "logged_in" not in st.session_state:
