@@ -1,4 +1,24 @@
 {
-    "pedroelmapache@gmail.com": {"Password": "password", "Name": "Pedro Mapache", "Date of Birth": "15/05/1992", "Gender": "Male", "Blood Type": "O+",
-        "Family Doctor": "Dr. Smith", "Email": "pedroelmapache@gmail.com", "Phone": "+34 612345678", "Address": "Passeig de Pujades, 1, 08003 BCN"}
+    "pedroelmapache@gmail.com": {
+        "Password": "password",
+        "Name": "Pedro Mapache",
+        "Date of Birth": "15/05/1992",
+        "Gender": "Male",
+        "Blood Type": "O+",
+        "Family Doctor": "Dr. Smith",
+        "Email": "pedroelmapache@gmail.com",
+        "Phone": "+34 612345678",
+        "Address": "Passeig de Pujades, 1, 08003 BCN"
+    },
+    "user@example.com": {
+        "Password": "example",
+        "Name": "Example Example Example",
+        "Date of Birth": "22-07-1987",
+        "Gender": "Male",
+        "Blood Type": "B+",
+        "Family Doctor": "",
+        "Email": "user@example.com",
+        "Phone": "+341 68765321",
+        "Address": "Street Street Street"
+    }
 }
