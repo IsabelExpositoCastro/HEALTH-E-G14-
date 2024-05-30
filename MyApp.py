@@ -2,6 +2,7 @@ import os
 import streamlit as st
 from openai import OpenAI
 import json
+from datetime import date, timedelta, datetime
 
 # Initialize OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -35,15 +36,40 @@ def login():
         else:
             st.error("Invalid email or password")
             return False
-        
-#def createAccount():
-    #email = st.text_input("Email")
-    #password = st.text_input("Password")
 
+def createAccount():
+    name = st.text_input("Name")
+    dateOfBirth = st.date_input("Date of Birth", format="DD/MM/YYYY", min_value = date.today() - timedelta(days=365*125),
+        max_value = date.today(), value = None)
+    gender = st.selectbox("Gender", ("Male", "Female", "Non-Binary", "Other"))
+    bloodType = st.selectbox("Blood Type", ("A+", "A-", "B+", "AB+", "AB-", "O+", "O-"))
+    familyDoctor = st.text_input("Family Doctor")
+    phone = st.text_input("Phone Number")
+    address = st.text_input("Address")
+    email = st.text_input("New Email")
+    password = st.text_input("New Password", type = "password")
+    if st.button("Register"):
+        if email not in users and all([name, dateOfBirth, phone, email, password]):
+            users[email] = {"Password": password,
+                            "Name": name,
+                            "Date of Birth": dateOfBirth.strftime("%d-%m-%Y"),
+                            "Gender": gender,
+                            "Blood Type": bloodType,
+                            "Family Doctor": familyDoctor,
+                            "Email": email,
+                            "Phone": phone,
+                            "Address": address}
+            with open("database.json", 'w') as newFile:
+                json.dump(users, newFile, indent = 4)
+            return True
+        else:
+            st.error("All fields except \"Family Doctor\" are mandatory. Please fill them to continue.")
+    else:
+        return False
+    
 # Function to log out the user
 def logout():
     st.session_state.logged_in = False
-    del st.session_state.user
     st.success("You have been logged out successfully.")
 
 # Main function to run the app
@@ -53,13 +79,22 @@ def main():
     # Initialize session state variable if not already initialized
     if "logged_in" not in st.session_state:
         st.session_state.logged_in = False
+    if "creating_account" not in st.session_state:
+        st.session_state.creating_account = False
 
     # Login page
     if not st.session_state.logged_in:
-        st.header("Login")
-        if login():
-            st.session_state.logged_in = True
-
+        if st.session_state.creating_account:
+            st.header("Create Account")
+            if createAccount():
+                st.session_state.creating_account = False
+        else:
+            st.header("Login")
+            if login():
+                st.session_state.logged_in = True
+            if st.button("Sign Up"):
+                st.session_state.creating_account = True
+        
     # After login
     else:
         st.header("Welcome to Health-E")
@@ -67,7 +102,7 @@ def main():
         # Add logout button
         if st.button("Logout"):
             logout()
-
+        
         # Menu options
         menu = st.sidebar.selectbox("Menu", ["Chatbot", "Appointments", "Profile"])
 
