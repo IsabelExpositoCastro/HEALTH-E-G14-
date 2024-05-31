@@ -76,7 +76,6 @@ def logout():
 def main():
     # Display an image as the title
     #st.image("image.png", use_column_width=True)
-
     #st.markdown("<h1 style='text-align: center; color: #333;'>WHERE HEALTH MEETS AI<br>WHERE HEALTH MEETS EASE.</h1>", unsafe_allow_html=True)
 
     # Initialize session state variable if not already initialized
@@ -147,19 +146,25 @@ def main():
         # Appointments page
         elif st.session_state.selected_menu == "Appointments":
             st.subheader("Appointments")
-            appointments_submenu = st.selectbox("Select Option", ["Schedule New Appointment", "View Upcoming Appointments", "Appointment History"])
 
-            if appointments_submenu == "Schedule New Appointment":
-                st.write("This is where you can schedule a new appointment.")
-                # Additional code to schedule an appointment goes here
-
-            elif appointments_submenu == "View Upcoming Appointments":
-                st.write("This is where you can view your upcoming appointments.")
-                # Additional code to view upcoming appointments goes here
-
-            elif appointments_submenu == "Appointment History":
-                st.write("This is where you can view your appointment history.")
-                # Additional code to view appointment history goes here
+            # Define appointment options
+            appointment_options = ["Schedule New Appointment", "View Upcoming Appointments", "Appointment History"]
+            appointment_icons = ["📅", "🕒", "📚"]
+            
+            # Display appointment options as buttons or icons
+            option_columns = st.columns(len(appointment_options))
+            for i, option in enumerate(appointment_options):
+                if option_columns[i].button(f"{appointment_icons[i]} {option}"):
+                    # Perform actions based on selected option
+                    if option == "Schedule New Appointment":
+                        st.write("This is where you can schedule a new appointment.")
+                        # Additional code to schedule an appointment goes here
+                    elif option == "View Upcoming Appointments":
+                        st.write("This is where you can view your upcoming appointments.")
+                        # Additional code to view upcoming appointments goes here
+                    elif option == "Appointment History":
+                        st.write("This is where you can view your appointment history.")
+                        # Additional code to view appointment history goes here
 
         # Profile page
         elif st.session_state.selected_menu == "Profile":
