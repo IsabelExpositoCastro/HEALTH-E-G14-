@@ -74,10 +74,6 @@ def logout():
 
 # Main function to run the app
 def main():
-    # Display an image as the title
-    #st.image("image.png", use_column_width=True)
-    #st.markdown("<h1 style='text-align: center; color: #333;'>WHERE HEALTH MEETS AI<br>WHERE HEALTH MEETS EASE.</h1>", unsafe_allow_html=True)
-
     # Initialize session state variable if not already initialized
     if "logged_in" not in st.session_state:
         st.session_state.logged_in = False
@@ -91,7 +87,6 @@ def main():
 
         # Centered title with separated parts
         st.markdown("<h1 style='text-align: center; color: #333;'>WHERE HEALTH MEETS AI<br>WHERE HEALTH MEETS EASE.</h1>", unsafe_allow_html=True)
-
 
     # Login page
     if not st.session_state.logged_in:
@@ -109,15 +104,19 @@ def main():
         
     # After login
     else:
-        st.header("Welcome to Health-E")
-
+        # Top section with welcome text and logo
+        top_section = st.columns([3, 1])
+        top_section[0].header("Welcome to Health-E")
+        if top_section[1].button("🏠"):
+            st.session_state.selected_menu = "Account Options"
+        
         # Add logout button
         if st.button("Logout"):
             logout()
         
         # Menu options
-        menu_items = ["Chatbot", "Appointments", "Profile"]
-        menu_icons = ["💬", "📅", "👤"]
+        menu_items = ["Chatbot", "Appointments"]
+        menu_icons = ["💬", "📅"]
         menu_columns = st.columns(len(menu_items))
 
         # Define selected menu
@@ -166,18 +165,42 @@ def main():
                         st.write("This is where you can view your appointment history.")
                         # Additional code to view appointment history goes here
 
-        # Profile page
-        elif st.session_state.selected_menu == "Profile":
-            st.subheader("Profile")
-            container = st.container()
-            with container:
-                rows = [] # Store all rows in an array so they can be accessed later
-                for field, value in st.session_state.user.items():
-                    if field != "Password":
-                        row = st.columns(2)
-                        row[0].write(f"**{field}:**")
-                        row[1].write(value)
-                        rows.append(row)
+        # Account Options section
+        if st.session_state.selected_menu == "Account Options":
+            st.subheader("Account Options")
+
+            # Define account options
+            account_options = ["My Account", "Privacy & Security", "My Saved Prescriptions", "See My Appointments", "Contact Us"]
+            account_icons = ["👤", "🔒", "💊", "📅", "📞"]
+            
+            # Display account options as buttons or icons
+            account_columns = st.columns(len(account_options))
+            for i, option in enumerate(account_options):
+                if account_columns[i].button(f"{account_icons[i]} {option}"):
+                    # Perform actions based on selected option
+                    if option == "My Account":
+                        st.write("This is where you can view and edit your account information.")
+                        container = st.container()
+                        with container:
+                            rows = [] # Store all rows in an array so they can be accessed later
+                            for field, value in st.session_state.user.items():
+                                if field != "Password":
+                                    row = st.columns(2)
+                                    row[0].write(f"**{field}:**")
+                                    row[1].write(value)
+                                    rows.append(row)
+                    elif option == "Privacy & Security":
+                        st.write("This is where you can manage your privacy and security settings.")
+                        # Additional code for Privacy & Security goes here
+                    elif option == "My Saved Prescriptions":
+                        st.write("This is where you can view your saved prescriptions.")
+                        # Additional code for My Saved Prescriptions goes here
+                    elif option == "See My Appointments":
+                        st.write("This is where you can view your appointments.")
+                        # Additional code for See My Appointments goes here
+                    elif option == "Contact Us":
+                        st.write("This is where you can contact us.")
+                        # Additional code for Contact Us goes here
 
 # Run the app
 if __name__ == "__main__":
