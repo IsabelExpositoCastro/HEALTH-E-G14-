@@ -31,5 +31,16 @@
         "Email": "j",
         "Phone": "j",
         "Address": "j"
+    },
+    "user77@example.com": {
+        "Password": "password",
+        "Name": "Itxaro",
+        "Date of Birth": "09-04-2003",
+        "Gender": "Female",
+        "Blood Type": "A+",
+        "Family Doctor": "Alzua",
+        "Email": "user77@example.com",
+        "Phone": "123456789",
+        "Address": "c/ quiero acabar 77"
     }
 }
