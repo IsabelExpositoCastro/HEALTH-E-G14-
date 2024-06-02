@@ -1,6 +1,5 @@
 import streamlit as st
 
-# Function to simulate user login
 def login(users):
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
@@ -13,7 +12,3 @@ def login(users):
         else:
             st.error("Invalid email or password")
             return False
-
-def logout():
-    st.session_state.logged_in = False
-    st.success("You have been logged out successfully.")
