@@ -9,6 +9,7 @@ from modules.login import login
 from modules.validate_signup import validate_signup
 from modules.createAccount import createAccount
 from modules.ChatBot import run_chatbot
+from modules.navigate_into import navigate_to
 
 # Custom CSS for styling
 st.markdown("""
@@ -120,25 +121,39 @@ def main():
         
     # After login
     else:
-        notifications_clicked = st.button("🔔 Notifications", key='notifications')
-        who_are_we_clicked = st.button("Who are we?", key='who_are_we')
-        consult_chatbot_clicked = st.button("Consult ChatBot", key='consult_chatbot')
-        log_out_clicked = st.button("Log Out", key='log_out')
-        profile_clicked = st.button("👤 Profile", key='profile')
+        with st.container():
+            st.write("""
+                <style>
+                    .blue-bar {
+                        background-color: #007bff;
+                        padding: 10px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        color: white;
+                    }
+                    .button {
+                        background-color: transparent;
+                        color: white;
+                        border: none;
+                        cursor: pointer;
+                        margin-right: 10px;
+                        font-weight: bold;
+                    }
+                </style>
+                <div class="blue-bar">
+                    <div>
+                        <button class="button" onclick="navigate_to('Home')">App Logo</button>
+                        <button class="button" onclick="navigate_to('Who are we?')">Who are we?</button>
+                        <button class="button" onclick="navigate_to('Consult chatbot')">Consult chatbot</button>
+                    </div>
+                    <div>
+                        <button class="button" onclick="navigate_to('Log out')">Log out</button>
+                        <button class="button" onclick="navigate_to('Profile')">Profile</button>
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
 
-        # Handle button actions
-        if notifications_clicked:
-            st.write("Notifications clicked")
-        if who_are_we_clicked:
-            st.write("Who are we? clicked")
-        if consult_chatbot_clicked:
-            st.session_state.selected_menu = "Chatbot"
-        if log_out_clicked:
-            st.session_state.logged_in = False
-            st.experimental_rerun()
-        if profile_clicked:
-            st.session_state.selected_menu = "Account Options"
-            st.header("Welcome to Health-E")
             
         # Top section with welcome text and logo
         top_section = st.columns([3, 1])
