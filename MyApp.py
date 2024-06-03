@@ -8,10 +8,76 @@ from modules.logout import logout  # Correct import statement
 from modules.login import login 
 from modules.validate_signup import validate_signup
 from modules.createAccount import createAccount
+from modules.ChatBot import run_chatbot
 
+# Custom CSS for styling
+st.markdown("""
+    <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f2f6;
+    }
+    .chat-message {
+        padding: 10px;
+        border-radius: 10px;
+        margin: 10px 0;
+        max-width: 80%;
+    }
+    .chat-message.user {
+        background-color: #d1e7dd;
+        color: #0f5132;
+        align-self: flex-end;
+    }
+    .chat-message.assistant {
+        background-color: #f8d7da;
+        color: #842029;
+        align-self: flex-start;
+    }
+    .stButton button {
+        background-color: #007bff;
+        color: #fff;
+    }
+    .stButton button:hover {
+        background-color: #0056b3;
+        color: #fff;
+    }
+    .stTextInput input {
+        background-color: #e9ecef;
+        color: #495057;
+    }
+    .stTextInput input:focus {
+        background-color: #fff;
+        color: #495057;
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background-color: #007bff;
+        color: #fff;
+    }
+    .header img {
+        width: 50px;
+        cursor: pointer;
+    }
+    .header-btns {
+        display: flex;
+        align-items: center;
+    }
+    .header-btns button {
+        margin-left: 10px;
+        background-color: transparent;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+    .header-btns button:hover {
+        text-decoration: underline;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-# Initialize OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Initialize "database"
 with open('database.json', 'r') as file:
@@ -21,16 +87,10 @@ with open('database.json', 'r') as file:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Function to interact with the AI chatbot
-def interact_with_chatbot(user_input, messages):
-    chat_completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",  # Specify the GPT-3 model to use
-        messages=messages + [{"role": "user", "content": user_input}],  # Concatenate previous messages with new user input
-    )
-    return chat_completion.choices[0].message.content
-
 # Main function to run the app
 def main():
+    
+    
     # Initialize session state variable if not already initialized
     if "logged_in" not in st.session_state:
         st.session_state.logged_in = False
@@ -39,6 +99,23 @@ def main():
 
     # Display image and centered title only in the first login/sign-in section
     if not st.session_state.logged_in:
+        st.markdown(
+            """
+            <div class="header">
+                <div>
+                    <img src="image.png" alt="App Logo" style="width: 50px; cursor: pointer;" onclick="location.href='.'">
+                </div>
+                <div class="header-btns">
+                    <button>🔔 Notifications</button>
+                    <button>Who are we?</button>
+                    <button>Consult ChatBot</button>
+                    <button>Log In</button>
+                    <button>👤 Profile</button>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
         # Display an image as the title with a specified width
         st.image("image.png", width=200, use_column_width=True)  # Set the width as per your requirement
 
@@ -47,7 +124,7 @@ def main():
 
     # Login page
     if not st.session_state.logged_in:
-        
+        # Header section        
         if st.session_state.creating_account:
             st.header("Create Account")
             if createAccount(users):
@@ -61,6 +138,23 @@ def main():
         
     # After login
     else:
+        st.markdown(
+        """
+        <div class="header">
+            <div>
+                <img src="image.png" alt="App Logo" style="width: 50px; cursor: pointer;" onclick="location.href='.'">
+            </div>
+            <div class="header-btns">
+                <button>🔔 Notifications</button>
+                <button>Who are we?</button>
+                <button>Consult ChatBot</button>
+                <button>Log Out</button>
+                <button>👤 Profile</button>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
         # Top section with welcome text and logo
         top_section = st.columns([3, 1])
         top_section[0].header("Welcome to Health-E")
@@ -88,16 +182,7 @@ def main():
         # Chatbot page
         if st.session_state.selected_menu == "Chatbot":
             st.subheader("Chatbot")
-            user_input = st.text_input("You: ")
-            if st.button("Send"):
-                if user_input:
-                    # Get previous chat messages
-                    messages = [m["content"] for m in st.session_state.messages if m["role"] != "assistant"]
-                    response = interact_with_chatbot(user_input, messages)
-                    st.write("Health-E Chatbot:", response)
-                    # Append user input and bot response to messages
-                    st.session_state.messages.append({"role": "user", "content": user_input})
-                    st.session_state.messages.append({"role": "assistant", "content": response})
+            run_chatbot()
 
         # Appointments page
         elif st.session_state.selected_menu == "Appointments":
