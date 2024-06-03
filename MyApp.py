@@ -10,73 +10,18 @@ from modules.validate_signup import validate_signup
 from modules.createAccount import createAccount
 from modules.ChatBot import run_chatbot
 
-# Custom CSS for styling
 st.markdown("""
-    <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f0f2f6;
-    }
-    .chat-message {
-        padding: 10px;
-        border-radius: 10px;
-        margin: 10px 0;
-        max-width: 80%;
-    }
-    .chat-message.user {
-        background-color: #d1e7dd;
-        color: #0f5132;
-        align-self: flex-end;
-    }
-    .chat-message.assistant {
-        background-color: #f8d7da;
-        color: #842029;
-        align-self: flex-start;
-    }
-    .stButton button {
-        background-color: #007bff;
-        color: #fff;
-    }
-    .stButton button:hover {
-        background-color: #0056b3;
-        color: #fff;
-    }
-    .stTextInput input {
-        background-color: #e9ecef;
-        color: #495057;
-    }
-    .stTextInput input:focus {
-        background-color: #fff;
-        color: #495057;
-    }
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px;
-        background-color: #007bff;
-        color: #fff;
-    }
-    .header img {
-        width: 50px;
-        cursor: pointer;
-    }
-    .header-btns {
-        display: flex;
-        align-items: center;
-    }
-    .header-btns button {
-        margin-left: 10px;
-        background-color: transparent;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-    }
-    .header-btns button:hover {
-        text-decoration: underline;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+            <style>
+                .stButton button {
+                    background-color: #2D4AF7;
+                    color: #fff;
+                }
+                .stButton button:hover {
+                    background-color: #1031F9;
+                    color: #fff;
+                }
+            </style>
+            """, unsafe_allow_html=True)
 
 
 # Initialize "database"
