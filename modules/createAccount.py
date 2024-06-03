@@ -31,10 +31,10 @@ def createAccount(users):
                 with open("database.json", 'w') as newFile:
                     json.dump(users, newFile, indent=4)
                 st.success("Account created successfully!")
-                return True
+                return users[email]
             else:
                 st.error("Email already exists. Please use a different email.")
         else:
             st.error(f"The following fields are missing or incomplete: {', '.join(missing_fields)}")
     else:
-        return False
+        return {}

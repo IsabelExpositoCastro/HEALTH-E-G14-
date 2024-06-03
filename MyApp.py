@@ -44,23 +44,7 @@ def main():
 
     # Display image and centered title only in the first login/sign-in section
     if not st.session_state.logged_in:
-        st.markdown(
-            """
-            <div class="header">
-                <div>
-                    <img src="image.png" alt="App Logo" style="width: 50px; cursor: pointer;" onclick="location.href='.'">
-                </div>
-                <div class="header-btns">
-                    <button>🔔 Notifications</button>
-                    <button>Who are we?</button>
-                    <button>Consult ChatBot</button>
-                    <button>Log In</button>
-                    <button>👤 Profile</button>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+
         # Display an image as the title with a specified width
         st.image("image.png", width=200, use_column_width=True)  # Set the width as per your requirement
 
@@ -83,23 +67,7 @@ def main():
         
     # After login
     else:
-        st.markdown(
-        """
-        <div class="header">
-            <div>
-                <img src="image.png" alt="App Logo" style="width: 50px; cursor: pointer;" onclick="location.href='.'">
-            </div>
-            <div class="header-btns">
-                <button>🔔 Notifications</button>
-                <button>Who are we?</button>
-                <button>Consult ChatBot</button>
-                <button>Log Out</button>
-                <button>👤 Profile</button>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+        
         # Top section with welcome text and logo
         top_section = st.columns([3, 1])
         top_section[0].header("Welcome to Health-E")

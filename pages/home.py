@@ -1,6 +1,6 @@
 import streamlit as st
 
-def display(users):
+def display(user):
     st.subheader("Menu")
 
     # Define account options
@@ -17,7 +17,9 @@ def display(users):
                 container = st.container()
                 with container:
                     rows = [] # Store all rows in an array so they can be accessed later
-                    for field, value in st.session_state.user.items():
+                    #print(st.session_state.user)
+                    for field, value in user.items():
+                        
                         if field != "Password":
                             row = st.columns(2)
                             row[0].write(f"**{field}:**")
