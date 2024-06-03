@@ -2,7 +2,7 @@ import streamlit as st
 
 def display():
     st.subheader("Menu")
-
+    user_1 = st.session_state.user
     # Define account options
     account_options = ["My Account", "Privacy & Security", "My Saved Prescriptions", "See My Appointments", "Contact Us"]
     account_icons = ["👤", "🔒", "💊", "📅", "📞"]
