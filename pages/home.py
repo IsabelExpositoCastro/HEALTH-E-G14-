@@ -1,6 +1,6 @@
 import streamlit as st
 
-def display(user):
+def display():
     st.subheader("Menu")
 
     # Define account options
@@ -18,7 +18,7 @@ def display(user):
                 with container:
                     rows = [] # Store all rows in an array so they can be accessed later
                     #print(st.session_state.user)
-                    for field, value in user.items():
+                    for field, value in st.session_state.user.items():
                         
                         if field != "Password":
                             row = st.columns(2)
@@ -37,3 +37,4 @@ def display(user):
             elif option == "Contact Us":
                 st.write("This is where you can contact us.")
                 # Additional code for Contact Us goes here
+                
