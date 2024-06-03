@@ -1,7 +1,12 @@
+# Import necessary libraries
+import os
 import streamlit as st
+from openai import OpenAI
 import json
-from modules.logout import logout
-from modules.login import login
+from datetime import date, timedelta
+from modules.logout import logout  # Correct import statement
+from modules.login import login 
+from modules.validate_signup import validate_signup
 from modules.createAccount import createAccount
 from modules.ChatBot import run_chatbot
 
@@ -73,6 +78,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
+
 # Initialize "database"
 with open('database.json', 'r') as file:
     users = json.load(file)
@@ -83,18 +89,37 @@ if "messages" not in st.session_state:
 
 # Main function to run the app
 def main():
-    # Initialize session state variables if not already initialized
+    
+    # Initialize session state variable if not already initialized
     if "logged_in" not in st.session_state:
         st.session_state.logged_in = False
     if "creating_account" not in st.session_state:
         st.session_state.creating_account = False
-    if "selected_menu" not in st.session_state:
-        st.session_state.selected_menu = "Chatbot"
 
-    # Define the header section with interactive buttons
-    def display_header():
+    # Display image and centered title only in the first login/sign-in section
+    if not st.session_state.logged_in:
+        # Display an image as the title with a specified width
+        st.image("image.png", width=200, use_column_width=True)  # Set the width as per your requirement
+
+        # Centered title with separated parts
+        st.markdown("<h1 style='text-align: center; color: #333;'>WHERE HEALTH MEETS AI<br>WHERE HEALTH MEETS EASE.</h1>", unsafe_allow_html=True)
+
+    # Login page
+    if not st.session_state.logged_in:
+        # Header section        
+        if st.session_state.creating_account:
+            st.header("Create Account")
+            if createAccount(users):
+                st.session_state.creating_account = False
+        else:
+            st.header("Login")
+            if login(users):
+                st.session_state.logged_in = True
+            if st.button("Sign Up"):
+                st.session_state.creating_account = True
         
-        
+    # After login
+    else:
         notifications_clicked = st.button("🔔 Notifications", key='notifications')
         who_are_we_clicked = st.button("Who are we?", key='who_are_we')
         consult_chatbot_clicked = st.button("Consult ChatBot", key='consult_chatbot')
@@ -113,37 +138,15 @@ def main():
             st.experimental_rerun()
         if profile_clicked:
             st.session_state.selected_menu = "Account Options"
-
-    # Handle button clicks
-    
-
-    # Display image and centered title only in the first login/sign-in section
-    if not st.session_state.logged_in:
-        # Display an image as the title with a specified width
-        st.image("image.png", width=200, use_column_width=True)
-        # Centered title with separated parts
-        st.markdown("<h1 style='text-align: center; color: #333;'>WHERE HEALTH MEETS AI<br>WHERE HEALTH MEETS EASE.</h1>", unsafe_allow_html=True)
-
-    # Login page
-    if not st.session_state.logged_in:
-        if st.session_state.creating_account:
-            st.header("Create Account")
-            if createAccount(users):
-                st.session_state.creating_account = False
-        else:
-            st.header("Login")
-            if login(users):
-                st.session_state.logged_in = True
-            if st.button("Sign Up"):
-                st.session_state.creating_account = True
+            st.header("Welcome to Health-E")
+            
+        # Top section with welcome text and logo
+        top_section = st.columns([3, 1])
+        top_section[0].header("Welcome to Health-E")
         
-    # After login
-    else:
-        # Display the header
-        display_header()
-        
-        st.header("Welcome to Health-E")
-        
+        # Add logout button
+        if st.button("Logout"):
+            logout()
         
         # Menu options
         menu_items = ["Chatbot", "Appointments"]
