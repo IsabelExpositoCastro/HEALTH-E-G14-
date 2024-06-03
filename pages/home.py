@@ -2,7 +2,7 @@ import streamlit as st
 
 def display(user):
     st.subheader("Menu")
-
+    user_1 = st.session_state.user
     # Define account options
     account_options = ["My Account", "Privacy & Security", "My Saved Prescriptions", "See My Appointments", "Contact Us"]
     account_icons = ["👤", "🔒", "💊", "📅", "📞"]
@@ -18,7 +18,7 @@ def display(user):
                 with container:
                     rows = [] # Store all rows in an array so they can be accessed later
                     #print(st.session_state.user)
-                    for field, value in user.items():
+                    for field, value in user_1.items():
                         
                         if field != "Password":
                             row = st.columns(2)

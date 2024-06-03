@@ -1,3 +1,4 @@
+import base64
 import streamlit as st
 import json
 from modules.logout import logout
@@ -23,8 +24,8 @@ with open('database.json', 'r') as file:
     users = json.load(file)
 
 # Initialize session state variables if not already initialized
-if "user" not in st.session_state:
-    st.session_state.user = {}
+#if "user" not in st.session_state.user:
+user = json.loads("{}")
 
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
@@ -50,7 +51,8 @@ def main():
     if st.session_state.logged_in:
         # Display header buttons
         with st.container():
-            col1, col2, col3, col4, col5, col6 = st.columns(6)
+            col1, col2, col3, col4, col5 = st.columns(5)
+                       
             if col1.button("🔔 Notifications", key="notifications_btn"):
                 set_page("notifications")
             if col2.button("Who are we?", key="who_we_are_btn"):
@@ -62,9 +64,7 @@ def main():
                 st.session_state.user = {}
                 set_page("intro")
                 logout()
-            if col5.button("🏠", key="home_btn"):
-                set_page("home")
-            if col6.button("👤 Profile", key="profile_btn"):
+            if col5.button("👤 Profile", key="profile_btn"):
                 set_page("profile")
 
     if not st.session_state.logged_in:
@@ -77,7 +77,7 @@ def main():
     # Page content based on the current page
     if st.session_state.current_page == "intro":
         intro.display(users)
-    elif st.session_state.current_page == "home":
+    elif st.session_state.current_page == "profile":
         home.display(user)
     elif st.session_state.current_page == "notifications":
         notifications.display()
@@ -85,8 +85,8 @@ def main():
         who_we_are.display()
     elif st.session_state.current_page == "consult_chatbot":
         consult_chatbot.display()
-    elif st.session_state.current_page == "profile":
-        profile.display()
+    #elif st.session_state.current_page == "profile":
+        #profile.display()
 
 if __name__ == "__main__":
     main()
