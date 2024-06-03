@@ -1,11 +1,77 @@
-import os
 import streamlit as st
-from openai import OpenAI
 import json
-from datetime import date, timedelta
+from modules.logout import logout
+from modules.login import login
+from modules.createAccount import createAccount
+from modules.ChatBot import run_chatbot
 
-# Initialize OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Custom CSS for styling
+st.markdown("""
+    <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f2f6;
+    }
+    .chat-message {
+        padding: 10px;
+        border-radius: 10px;
+        margin: 10px 0;
+        max-width: 80%;
+    }
+    .chat-message.user {
+        background-color: #d1e7dd;
+        color: #0f5132;
+        align-self: flex-end;
+    }
+    .chat-message.assistant {
+        background-color: #f8d7da;
+        color: #842029;
+        align-self: flex-start;
+    }
+    .stButton button {
+        background-color: #007bff;
+        color: #fff;
+    }
+    .stButton button:hover {
+        background-color: #0056b3;
+        color: #fff;
+    }
+    .stTextInput input {
+        background-color: #e9ecef;
+        color: #495057;
+    }
+    .stTextInput input:focus {
+        background-color: #fff;
+        color: #495057;
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background-color: #007bff;
+        color: #fff;
+    }
+    .header img {
+        width: 50px;
+        cursor: pointer;
+    }
+    .header-btns {
+        display: flex;
+        align-items: center;
+    }
+    .header-btns button {
+        margin-left: 10px;
+        background-color: transparent;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+    .header-btns button:hover {
+        text-decoration: underline;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 # Initialize "database"
 with open('database.json', 'r') as file:
@@ -15,104 +81,69 @@ with open('database.json', 'r') as file:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Function to interact with the AI chatbot
-def interact_with_chatbot(user_input, messages):
-    chat_completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",  # Specify the GPT-3 model to use
-        messages=messages + [{"role": "user", "content": user_input}],  # Concatenate previous messages with new user input
-    )
-    return chat_completion.choices[0].message.content
-
-# Function to simulate user login
-def login():
-    email = st.text_input("Email")
-    password = st.text_input("Password", type="password")
-    if st.button("Login"):
-        # Check if email and password are correct
-        if email in users and users[email]['Password'] == password:
-            st.session_state.logged_in = True  # Initialize session state variable
-            st.session_state.user = users[email]
-            return True
-        else:
-            st.error("Invalid email or password")
-            return False
-
-def createAccount():
-    name = st.text_input("Name")
-    dateOfBirth = st.date_input("Date of Birth", format="DD/MM/YYYY", min_value = date.today() - timedelta(days=365*125),
-        max_value = date.today(), value = None)
-    gender = st.selectbox("Gender", ("Male", "Female", "Non-Binary", "Other"))
-    bloodType = st.selectbox("Blood Type", ("A+", "A-", "B+", "AB+", "AB-", "O+", "O-"))
-    familyDoctor = st.text_input("Family Doctor")
-    phone = st.text_input("Phone Number")
-    address = st.text_input("Address")
-    email = st.text_input("New Email")
-    password = st.text_input("New Password", type = "password")
-    if st.button("Register"):
-        if email not in users and all([name, dateOfBirth, phone, email, password]):
-            users[email] = {"Password": password,
-                            "Name": name,
-                            "Date of Birth": dateOfBirth.strftime("%d-%m-%Y"),
-                            "Gender": gender,
-                            "Blood Type": bloodType,
-                            "Family Doctor": familyDoctor,
-                            "Email": email,
-                            "Phone": phone,
-                            "Address": address}
-            with open("database.json", 'w') as newFile:
-                json.dump(users, newFile, indent = 4)
-            return True
-        else:
-            st.error("All fields except \"Family Doctor\" are mandatory. Please fill them to continue.")
-    else:
-        return False
-    
-# Function to log out the user
-def logout():
-    st.session_state.logged_in = False
-    st.success("You have been logged out successfully.")
-
 # Main function to run the app
 def main():
-    # Initialize session state variable if not already initialized
+    # Initialize session state variables if not already initialized
     if "logged_in" not in st.session_state:
         st.session_state.logged_in = False
     if "creating_account" not in st.session_state:
         st.session_state.creating_account = False
+    if "selected_menu" not in st.session_state:
+        st.session_state.selected_menu = "Chatbot"
+
+    # Define the header section with interactive buttons
+    def display_header():
+        
+        
+        notifications_clicked = st.button("🔔 Notifications", key='notifications')
+        who_are_we_clicked = st.button("Who are we?", key='who_are_we')
+        consult_chatbot_clicked = st.button("Consult ChatBot", key='consult_chatbot')
+        log_out_clicked = st.button("Log Out", key='log_out')
+        profile_clicked = st.button("👤 Profile", key='profile')
+
+        # Handle button actions
+        if notifications_clicked:
+            st.write("Notifications clicked")
+        if who_are_we_clicked:
+            st.write("Who are we? clicked")
+        if consult_chatbot_clicked:
+            st.session_state.selected_menu = "Chatbot"
+        if log_out_clicked:
+            st.session_state.logged_in = False
+            st.experimental_rerun()
+        if profile_clicked:
+            st.session_state.selected_menu = "Account Options"
+
+    # Handle button clicks
+    
 
     # Display image and centered title only in the first login/sign-in section
     if not st.session_state.logged_in:
         # Display an image as the title with a specified width
-        st.image("image.png", width=200, use_column_width=True)  # Set the width as per your requirement
-
+        st.image("image.png", width=200, use_column_width=True)
         # Centered title with separated parts
         st.markdown("<h1 style='text-align: center; color: #333;'>WHERE HEALTH MEETS AI<br>WHERE HEALTH MEETS EASE.</h1>", unsafe_allow_html=True)
 
     # Login page
     if not st.session_state.logged_in:
-        
         if st.session_state.creating_account:
             st.header("Create Account")
-            if createAccount():
+            if createAccount(users):
                 st.session_state.creating_account = False
         else:
             st.header("Login")
-            if login():
+            if login(users):
                 st.session_state.logged_in = True
             if st.button("Sign Up"):
                 st.session_state.creating_account = True
         
     # After login
     else:
-        # Top section with welcome text and logo
-        top_section = st.columns([3, 1])
-        top_section[0].header("Welcome to Health-E")
-        if top_section[1].button("🏠"):
-            st.session_state.selected_menu = "Account Options"
+        # Display the header
+        display_header()
         
-        # Add logout button
-        if st.button("Logout"):
-            logout()
+        st.header("Welcome to Health-E")
+        
         
         # Menu options
         menu_items = ["Chatbot", "Appointments"]
@@ -131,16 +162,7 @@ def main():
         # Chatbot page
         if st.session_state.selected_menu == "Chatbot":
             st.subheader("Chatbot")
-            user_input = st.text_input("You: ")
-            if st.button("Send"):
-                if user_input:
-                    # Get previous chat messages
-                    messages = [m["content"] for m in st.session_state.messages if m["role"] != "assistant"]
-                    response = interact_with_chatbot(user_input, messages)
-                    st.write("Health-E Chatbot:", response)
-                    # Append user input and bot response to messages
-                    st.session_state.messages.append({"role": "user", "content": user_input})
-                    st.session_state.messages.append({"role": "assistant", "content": response})
+            run_chatbot()
 
         # Appointments page
         elif st.session_state.selected_menu == "Appointments":
