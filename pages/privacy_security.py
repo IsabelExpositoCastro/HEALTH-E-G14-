@@ -38,7 +38,3 @@ def display():
     
     if st.button("📞 Contact Us"):
         contact_us.display()
-
-if __name__ == "__main__":
-    display()
-    
