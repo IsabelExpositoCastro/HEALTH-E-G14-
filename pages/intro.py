@@ -1,8 +1,9 @@
 import streamlit as st
-from pages import home
+from pages import profile
 from modules.login import login
 from modules.createAccount import createAccount
 from MyAppTrial import set_page
+from pages import profile
 
 def display(users):
     

@@ -14,5 +14,4 @@ def navigate_to(section):
         # Add functionality to log out
         pass
     elif section == "Profile":
-        st.write("Profiiiiiiiiileeeeeeeeee")
         st.session_state.selected_menu = "Account Options"

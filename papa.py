@@ -4,7 +4,7 @@ import json
 from modules.logout import logout
 from modules.login import login
 from modules.createAccount import createAccount
-from pages import notifications, who_we_are, consult_chatbot, profile, intro, home
+from pages import notifications, who_we_are, consult_chatbot, intro, profile
 
 st.markdown("""
     <style>
@@ -50,6 +50,7 @@ def main():
 
     if st.session_state.logged_in:
         # Display header buttons
+        st.image("image.png", use_column_width=True)
         with st.container():
             col1, col2, col3, col4, col5 = st.columns(5)
                        
@@ -78,7 +79,7 @@ def main():
     if st.session_state.current_page == "intro":
         intro.display(users)
     elif st.session_state.current_page == "profile":
-        home.display(user)
+        profile.display(user)
     elif st.session_state.current_page == "notifications":
         notifications.display()
     elif st.session_state.current_page == "who_we_are":

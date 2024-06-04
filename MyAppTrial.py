@@ -3,7 +3,7 @@ import json
 from modules.logout import logout
 from modules.login import login 
 from modules.createAccount import createAccount
-from pages import notifications, who_we_are, consult_chatbot, profile, intro, home
+from pages import notifications, who_we_are, consult_chatbot, profile, intro
 
 st.markdown("""
             <style>
