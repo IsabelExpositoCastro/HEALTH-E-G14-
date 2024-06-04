@@ -1,5 +1,4 @@
 import streamlit as st
-from pages import contact_us
 
 def display():
     # Set the page configuration
@@ -34,7 +33,3 @@ def display():
         </div>
     </div>
     """, unsafe_allow_html=True)
-
-    
-    if st.button("📞 Contact Us"):
-        contact_us.display()

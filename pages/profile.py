@@ -1,5 +1,5 @@
 import streamlit as st
-from pages import privacy_security
+from pages import privacy_security, contact_us
 
 def display(user):
     st.subheader("Menu")
@@ -36,5 +36,5 @@ def display(user):
                 st.write("This is where you can view your appointments.")
                 # Additional code for See My Appointments goes here
             elif option == "Contact Us":
-                st.write("This is where you can contact us.")
+                contact_us.display()
                 # Additional code for Contact Us goes here

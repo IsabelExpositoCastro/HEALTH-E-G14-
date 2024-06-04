@@ -5,3 +5,4 @@ def display():
     st.write("Email :   support@healthe.com")
     st.write("Phone number:    ")
     st.markdown(f'<a href="tel:+1234567890">{telephone_number}</a>', unsafe_allow_html=True)
+    
